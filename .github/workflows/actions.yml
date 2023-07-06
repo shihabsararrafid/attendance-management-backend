@@ -4,6 +4,7 @@ on:
     branches: ["main"]
 jobs:
   first_demo_job:
+    runs-on: ubuntu-latest
     name: The first demo job
     steps:
       - name: Show the demo running
@@ -14,4 +15,3 @@ jobs:
           VAR4: Workflow jobs
         run: |
           echo $VAR1 $VAR2 $VAR3 $VAR4.
-<span style="font-weight: 400;">    </span>
