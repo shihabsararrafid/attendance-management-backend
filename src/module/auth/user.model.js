@@ -16,6 +16,11 @@ const userSchema = new Schema({
     required: true,
     minLength: [6, "Password must 6 or more lengths"],
   },
+  role: {
+    type: String,
+    enum: ["teacher", "student"],
+    default: "student",
+  },
 });
 
 const userModel = model("User", userSchema);

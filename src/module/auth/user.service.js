@@ -5,3 +5,8 @@ module.exports.createUserService = async (data) => {
   user.save();
   return user;
 };
+module.exports.getUserService = async (data) => {
+  const { userId, password } = data;
+  const user = await userModel.findOne({ userId, password });
+  return user;
+};
