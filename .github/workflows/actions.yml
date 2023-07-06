@@ -1,0 +1,17 @@
+name: Action Checking
+on:
+  push:
+    branches: ["main"]
+jobs:
+  first_action:
+   name: First Demo Action
+   steps: 
+     - name: Show the demo running
+        env:
+          VAR1: This is
+          VAR2: A Demo of
+          VAR3: GitHub Actions
+          VAR4: Workflow jobs
+        run: |
+          echo $VAR1 $VAR2 $VAR3 $VAR4.
+     <span style="font-weight: 400;">    </span>

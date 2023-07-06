@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const app = require("./app");
-const port = 4000;
+const port = 4001;
 
 async function connectToDb() {
   try {
