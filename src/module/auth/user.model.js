@@ -4,12 +4,12 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: [true, "Duplicate Email"],
   },
   userId: {
     type: String,
     required: true,
-    unique: true,
+    unique: [true, "Duplicate UserId"],
   },
   password: {
     type: String,
