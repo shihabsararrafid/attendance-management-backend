@@ -1,4 +1,8 @@
-const { createUserService, getUserService } = require("./user.service");
+const {
+  createUserService,
+  getUserService,
+  getAllUserService,
+} = require("./user.service");
 
 module.exports.createUser = async (req, res, next) => {
   try {
@@ -22,6 +26,23 @@ module.exports.getUser = async (req, res, next) => {
       res.status(200).json({
         status: "Success",
         message: "User Logged In",
+        user: user,
+      });
+    else throw new Error("No user with this credentials");
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+module.exports.getAllUser = async (req, res, next) => {
+  try {
+    const user = await getAllUserService();
+    if (user)
+      res.status(200).json({
+        status: "Success",
+        message: "User n",
         user: user,
       });
     else throw new Error("No user with this credentials");

@@ -1,16 +1,32 @@
 const userModel = require("./user.model");
-
+const { Error } = require("mongoose");
 module.exports.createUserService = async (data) => {
   try {
     const user = new userModel(data);
-    user.save();
+    await user.save();
     return user;
   } catch (error) {
-    return error;
+    if (error instanceof Error.ValidationError) {
+      const uniqueErrors = Object.values(error.errors).filter(
+        (err) => err.kind === "unique"
+      );
+      if (uniqueErrors.length > 0) {
+        const duplicateFields = uniqueErrors.map((err) => err.path).join(", ");
+        throw new Error(
+          `Duplicate value(s) found for field(s): ${duplicateFields}`
+        );
+      }
+    }
+    throw error;
   }
 };
 module.exports.getUserService = async (data) => {
   const { userId, password } = data;
   const user = await userModel.findOne({ userId, password });
+  return user;
+};
+module.exports.getAllUserService = async (data) => {
+  // const { userId, password } = data;
+  const user = await userModel.find({});
   return user;
 };
