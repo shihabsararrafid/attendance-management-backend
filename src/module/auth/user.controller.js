@@ -21,6 +21,7 @@ module.exports.createUser = async (req, res, next) => {
 };
 module.exports.getUser = async (req, res, next) => {
   try {
+    console.log("hello");
     const user = await getUserService(req.body);
     if (user)
       res.status(200).json({
