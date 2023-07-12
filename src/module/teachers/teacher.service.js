@@ -4,7 +4,8 @@ const Student = require("./Models/student.model");
 const userModel = require("../auth/user.model");
 
 module.exports.createClassService = async (data) => {
-  const { startRoll, numberOfStudents, code, batchName, teacher } = data;
+  const { startRoll, numberOfStudents, code, batchName, teacher, section } =
+    data;
   const Roll = parseInt(startRoll);
   var students = [];
   const studentsCount = parseInt(numberOfStudents);
@@ -19,7 +20,7 @@ module.exports.createClassService = async (data) => {
     students.push(obj);
     console.log(obj);
   }
-  const course = new Course({ code, batchName, teacher, students });
+  const course = new Course({ code, batchName, teacher, students, section });
   await course.save();
   return course;
   return students;

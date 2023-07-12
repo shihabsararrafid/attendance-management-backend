@@ -5,6 +5,10 @@ const classScehma = new Schema({
     type: String,
     required: true,
   },
+  section: {
+    type: String,
+    required: true,
+  },
   batchName: {
     type: String,
     required: true,
@@ -23,7 +27,7 @@ const classScehma = new Schema({
     },
   ],
 });
-classScehma.index({ batchName: 1, teacher: 1, code: 1 }, { unique: true });
+classScehma.index({ section: 1, teacher: 1, code: 1 }, { unique: true });
 
 const Class = mongoose.model("class", classScehma);
 module.exports = Class;
