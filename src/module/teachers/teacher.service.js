@@ -26,8 +26,32 @@ module.exports.createClassService = async (data) => {
   return students;
 };
 
+module.exports.getClassServiceByTeacher = async (data) => {
+  const course = await Course.find(
+    { teacher: new ObjectId(data) },
+    { code: 1, batchName: 1, section: 1 }
+  );
+  return course;
+};
+
 module.exports.getCoursesByTeacherService = async (data) => {
-  const course = await Course.find({ teacher: new ObjectId(data) });
+  const course = await Course.find(
+    { teacher: new ObjectId(data) },
+    { code: 1, batchName: 1, section: 1 }
+  );
+  return course;
+};
+module.exports.deleteCoursesFromTeacherService = async (
+  teacherId,
+  courseId
+) => {
+  const course = await Course.findOneAndDelete(
+    {
+      teacher: new ObjectId(teacherId),
+      _id: new ObjectId(courseId),
+    },
+    { code: 1, batchName: 1, section: 1 }
+  );
   return course;
 };
 module.exports.addStudentToCourseService = async (data) => {

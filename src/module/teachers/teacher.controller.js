@@ -2,6 +2,8 @@ const {
   getCoursesByTeacherService,
   addStudentToCourseService,
   createClassService,
+  deleteCoursesFromTeacher,
+  deleteCoursesFromTeacherService,
 } = require("./teacher.service");
 
 module.exports.createCourse = async (req, res, next) => {
@@ -19,6 +21,7 @@ module.exports.createCourse = async (req, res, next) => {
     });
   }
 };
+
 module.exports.getCoursesTeacher = async (req, res, next) => {
   try {
     const { teacher } = req.params;
@@ -27,6 +30,22 @@ module.exports.getCoursesTeacher = async (req, res, next) => {
       status: "Success",
       message: "Courses",
       courses: courses,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+module.exports.deleteCoursesFromTeacher = async (req, res, next) => {
+  try {
+    const { teacher } = req.params;
+    const { courseId } = req.body;
+    const courses = await deleteCoursesFromTeacherService(teacher, courseId);
+    res.status(200).json({
+      status: "Success",
+      message: "Successfully Deleted The data",
     });
   } catch (error) {
     res.status(400).json({
