@@ -4,6 +4,7 @@ const {
   createClassService,
   deleteCoursesFromTeacher,
   deleteCoursesFromTeacherService,
+  getCoursesStudentsService,
 } = require("./teacher.service");
 
 module.exports.createCourse = async (req, res, next) => {
@@ -26,6 +27,22 @@ module.exports.getCoursesTeacher = async (req, res, next) => {
   try {
     const { teacher } = req.params;
     const courses = await getCoursesByTeacherService(teacher);
+    res.status(200).json({
+      status: "Success",
+      message: "Courses",
+      courses: courses,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+module.exports.getCoursesStudent = async (req, res, next) => {
+  try {
+    const { courseId } = req.params;
+    const courses = await getCoursesStudentsService(courseId);
     res.status(200).json({
       status: "Success",
       message: "Courses",

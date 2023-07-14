@@ -41,6 +41,14 @@ module.exports.getCoursesByTeacherService = async (data) => {
   );
   return course;
 };
+module.exports.getCoursesStudentsService = async (data) => {
+  const students = await Course.find(
+    { _id: new ObjectId(data) },
+    { "students.userId": 1 }
+  );
+  return students;
+};
+//getCoursesStudentsService;
 module.exports.deleteCoursesFromTeacherService = async (
   teacherId,
   courseId
