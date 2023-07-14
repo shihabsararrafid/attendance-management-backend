@@ -4,7 +4,7 @@ const userRouter = require("./module/auth/user.route");
 const teacherRouter = require("./module/teachers/teachers.route");
 
 const app = express();
-
+require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
