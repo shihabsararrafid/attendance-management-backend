@@ -4,7 +4,7 @@ const port = 4001;
 
 async function connectToDb() {
   try {
-    await mongoose.connect(process.env.DB_URL_LOCAL);
+    await mongoose.connect(process.env.DB_URL);
     app.listen(port, () => {
       console.log("Connection to Db is successful");
     });

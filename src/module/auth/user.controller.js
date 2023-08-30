@@ -13,6 +13,7 @@ module.exports.createUser = async (req, res, next) => {
       books: user,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       status: "Failed",
       message: error.message,

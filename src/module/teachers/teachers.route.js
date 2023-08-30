@@ -5,6 +5,7 @@ const {
   addStudentToCourse,
   deleteCoursesFromTeacher,
   getCoursesStudent,
+  addStudentAttendance,
 } = require("./teacher.controller");
 
 const teacherRouter = express.Router();
@@ -15,6 +16,12 @@ teacherRouter
   .route("/course/students/:courseId")
   .get(getCoursesStudent)
   .post(addStudentToCourse);
+
+teacherRouter
+  .route("/course/attendance")
+  .get()
+  .post(addStudentAttendance)
+  .patch();
 teacherRouter
   .route("/course/:teacher")
   .get(getCoursesTeacher)

@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const Course = require("./Models/class.model");
 const Student = require("./Models/student.model");
 const userModel = require("../auth/user.model");
+const Attendance = require("./Models/attendance.model");
 
 module.exports.createClassService = async (data) => {
   const { startRoll, numberOfStudents, code, batchName, teacher, section } =
@@ -42,10 +43,7 @@ module.exports.getCoursesByTeacherService = async (data) => {
   return course;
 };
 module.exports.getCoursesStudentsService = async (data) => {
-  const students = await Course.find(
-    { _id: new ObjectId(data) },
-    { "students.userId": 1 }
-  );
+  const students = await Course.find({ _id: new ObjectId(data) });
   return students;
 };
 //getCoursesStudentsService;
@@ -75,5 +73,26 @@ module.exports.addStudentToCourseService = async (data) => {
     const student = new Student(data);
     await student.save();
     return student;
+  }
+};
+module.exports.addStudentAttendanceService = async (data) => {
+  //console.log(data);
+  //checking whether the data is already exists or not
+  const attendanceFind = await Attendance.findOne({
+    studentId: data.studentId,
+    courseId: data.courseId,
+    date: data.date,
+  });
+  if (attendanceFind) {
+    const attendance = await Attendance.updateOne(
+      { _id: attendanceFind._id },
+      data
+    );
+    return attendance;
+  } else {
+    const attendance = new Attendance(data);
+
+    await attendance.save();
+    return attendance;
   }
 };

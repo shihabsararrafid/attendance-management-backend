@@ -2,7 +2,9 @@ const userModel = require("./user.model");
 const { Error } = require("mongoose");
 module.exports.createUserService = async (data) => {
   try {
+    // console.log(data);
     const user = new userModel(data);
+    console.log(user);
     await user.save();
     return user;
   } catch (error) {
