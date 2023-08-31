@@ -75,6 +75,7 @@ module.exports.addStudentToCourseService = async (data) => {
     return student;
   }
 };
+
 module.exports.addStudentAttendanceService = async (data) => {
   //console.log(data);
   //checking whether the data is already exists or not
@@ -83,6 +84,7 @@ module.exports.addStudentAttendanceService = async (data) => {
     courseId: data.courseId,
     date: data.date,
   });
+  console.log(data);
   if (attendanceFind) {
     const attendance = await Attendance.updateOne(
       { _id: attendanceFind._id },
@@ -95,4 +97,30 @@ module.exports.addStudentAttendanceService = async (data) => {
     await attendance.save();
     return attendance;
   }
+};
+
+module.exports.getStudentAttendanceService = async (
+  courseId,
+  studentId,
+  date
+) => {
+  console.log(courseId, studentId, date);
+  const attendance = await Attendance.find({
+    studentId: studentId,
+    courseId,
+    date,
+  });
+  return attendance;
+};
+module.exports.getStudentsAttendanceService = async (
+  courseId,
+
+  date
+) => {
+  // console.log(courseId, studentId, date);
+  const attendance = await Attendance.find({
+    courseId,
+    date,
+  });
+  return attendance;
 };

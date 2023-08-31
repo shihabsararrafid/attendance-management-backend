@@ -6,6 +6,8 @@ const {
   deleteCoursesFromTeacher,
   getCoursesStudent,
   addStudentAttendance,
+  getStudentAttendance,
+  getStudentsAttendance,
 } = require("./teacher.controller");
 
 const teacherRouter = express.Router();
@@ -19,9 +21,15 @@ teacherRouter
 
 teacherRouter
   .route("/course/attendance")
-  .get()
+  // .get("/:courseId/:date", getStudentsAttendance)
   .post(addStudentAttendance)
   .patch();
+teacherRouter
+  .route("/course/attendance/:courseId/:date")
+  .get(getStudentsAttendance);
+teacherRouter
+  .route("/course/attendance/:studentId/:courseId/:date")
+  .get(getStudentAttendance);
 teacherRouter
   .route("/course/:teacher")
   .get(getCoursesTeacher)
