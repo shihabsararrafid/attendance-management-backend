@@ -77,26 +77,21 @@ module.exports.addStudentToCourseService = async (data) => {
 };
 
 module.exports.addStudentAttendanceService = async (data) => {
-  //console.log(data);
-  //checking whether the data is already exists or not
-  const attendanceFind = await Attendance.findOne({
-    studentId: data.studentId,
-    courseId: data.courseId,
-    date: data.date,
+  const attendanceFind = await Attendance.find({
+    courseId: data[0].courseId,
+    date: data[0].date,
   });
-  console.log(data);
-  if (attendanceFind) {
-    const attendance = await Attendance.updateOne(
-      { _id: attendanceFind._id },
-      data
-    );
-    return attendance;
-  } else {
-    const attendance = new Attendance(data);
 
-    await attendance.save();
-    return attendance;
+  if (attendanceFind) {
+    const attendance = await Attendance.deleteMany({
+      courseId: data[0].courseId,
+      date: data[0].date,
+    });
   }
+  const attendance = await Attendance.insertMany(data);
+
+  // await attendance.save();
+  return attendance;
 };
 
 module.exports.getStudentAttendanceService = async (
@@ -123,4 +118,37 @@ module.exports.getStudentsAttendanceService = async (
     date,
   });
   return attendance;
+};
+module.exports.getStudentsAttendanceReportService = async (courseId) => {
+  const students = await Attendance.aggregate([
+    {
+      $match: { courseId: courseId },
+    },
+    {
+      $group: {
+        _id: "$studentId",
+        total: { $sum: 1 },
+        presentCount: {
+          $sum: {
+            $cond: [{ $eq: ["$attendanceStatus", "present"] }, 1, 0],
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        studentId: "$_id",
+        attendancePercentage: {
+          $multiply: [{ $divide: ["$presentCount", "$total"] }, 100],
+        },
+        totalClass: "$total",
+      },
+    },
+    {
+      $sort: { studentId: 1 },
+    },
+  ]);
+  return students;
+  console.log(students);
 };

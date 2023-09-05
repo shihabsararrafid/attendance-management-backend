@@ -8,6 +8,7 @@ const {
   addStudentAttendanceService,
   getStudentAttendanceService,
   getStudentsAttendanceService,
+  getStudentsAttendanceReportService,
 } = require("./teacher.service");
 
 module.exports.createCourse = async (req, res, next) => {
@@ -93,6 +94,7 @@ module.exports.addStudentToCourse = async (req, res, next) => {
 
 module.exports.addStudentAttendance = async (req, res, next) => {
   try {
+    console.log("hi");
     const attendance = await addStudentAttendanceService(req.body);
     res.status(200).json({
       status: "Success",
@@ -100,6 +102,7 @@ module.exports.addStudentAttendance = async (req, res, next) => {
       attendance: attendance,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({
       status: "Failed",
       message: error.message,
@@ -139,6 +142,24 @@ module.exports.getStudentsAttendance = async (req, res, next) => {
 
       date
     );
+    res.status(200).json({
+      status: "Success",
+      message: "Attendance Successfully Loaded",
+      attendance: attendance,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+module.exports.getStudentsAttendanceReport = async (req, res, next) => {
+  try {
+    const { courseId } = req.query;
+    console.log("hi", req.query);
+
+    const attendance = await getStudentsAttendanceReportService(courseId);
     res.status(200).json({
       status: "Success",
       message: "Attendance Successfully Loaded",

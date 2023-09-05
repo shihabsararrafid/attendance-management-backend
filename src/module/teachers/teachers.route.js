@@ -8,6 +8,7 @@ const {
   addStudentAttendance,
   getStudentAttendance,
   getStudentsAttendance,
+  getStudentsAttendanceReport,
 } = require("./teacher.controller");
 
 const teacherRouter = express.Router();
@@ -21,7 +22,7 @@ teacherRouter
 
 teacherRouter
   .route("/course/attendance")
-  // .get("/:courseId/:date", getStudentsAttendance)
+  .get(getStudentsAttendanceReport)
   .post(addStudentAttendance)
   .patch();
 teacherRouter
