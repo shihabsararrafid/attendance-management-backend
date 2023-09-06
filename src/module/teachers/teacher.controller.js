@@ -1,4 +1,5 @@
-const { createQrToken } = require("../../utils/jwtutils");
+const createHttpError = require("http-errors");
+const { createQrToken, verifyToken } = require("../../utils/jwtutils");
 const {
   getCoursesByTeacherService,
   addStudentToCourseService,
@@ -179,9 +180,10 @@ module.exports.getStudentAttendanceQrCode = async (req, res, next) => {
     const { courseId, date, duration } = req.query;
 
     const token = await createQrToken({ courseId, date }, duration);
-    console.log(token);
+    //  console.log(token);
     QRCode.toDataURL(`${token}`, function (err, url) {
       if (url) {
+        // console.log(url);
         res.status(200).json({
           status: "Success",
           message: "Qr Code Generated",
@@ -195,6 +197,26 @@ module.exports.getStudentAttendanceQrCode = async (req, res, next) => {
     res.status(400).json({
       status: "Failed",
       message: error.message,
+    });
+  }
+  //next();
+};
+
+module.exports.saveStudentsAttendanceByQrCode = async (req, res, next) => {
+  try {
+    const { token } = req.body;
+    if (!token) createHttpError(401, "No Qr is Scanned");
+    const payload = await verifyToken(token);
+    res.status(200).json({
+      status: "Success",
+      message: "Qr Code Generated",
+      data: payload,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message:
+        error.message === "jwt expired" ? "Qr Code Expired" : error.message,
     });
   }
 };
