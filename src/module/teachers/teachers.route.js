@@ -10,6 +10,7 @@ const {
   getStudentsAttendance,
   getStudentsAttendanceReport,
   saveStudentAttendanceQrCode,
+  getStudentAttendanceQrCode,
 } = require("./teacher.controller");
 
 const teacherRouter = express.Router();
@@ -31,7 +32,7 @@ teacherRouter
   .get(getStudentsAttendance);
 teacherRouter
   .route("/course/attendance/qr")
-  .get(saveStudentAttendanceQrCode)
+  .get(getStudentAttendanceQrCode)
   .post();
 teacherRouter
   .route("/course/attendance/:studentId/:courseId/:date")

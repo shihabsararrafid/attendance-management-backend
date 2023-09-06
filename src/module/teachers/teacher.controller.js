@@ -1,3 +1,4 @@
+const { createQrToken } = require("../../utils/jwtutils");
 const {
   getCoursesByTeacherService,
   addStudentToCourseService,
@@ -173,15 +174,17 @@ module.exports.getStudentsAttendanceReport = async (req, res, next) => {
   }
 };
 
-module.exports.saveStudentAttendanceQrCode = async (req, res, next) => {
+module.exports.getStudentAttendanceQrCode = async (req, res, next) => {
   try {
-    const { courseId, date } = req.query;
-    const data = [{ courseId: "234132123213213" }, { date: "23-01-2023" }];
-    QRCode.toDataURL(data, function (err, url) {
+    const { courseId, date, duration } = req.query;
+
+    const token = await createQrToken({ courseId, date }, duration);
+    console.log(token);
+    QRCode.toDataURL(`${token}`, function (err, url) {
       if (url) {
         res.status(200).json({
           status: "Success",
-          message: "Attendance Successfully Loaded",
+          message: "Qr Code Generated",
           qrCode: url,
         });
       } else {
