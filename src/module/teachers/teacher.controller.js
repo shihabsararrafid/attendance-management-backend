@@ -10,7 +10,7 @@ const {
   getStudentsAttendanceService,
   getStudentsAttendanceReportService,
 } = require("./teacher.service");
-
+var QRCode = require("qrcode");
 module.exports.createCourse = async (req, res, next) => {
   try {
     const course = await createClassService(req.body);
@@ -164,6 +164,29 @@ module.exports.getStudentsAttendanceReport = async (req, res, next) => {
       status: "Success",
       message: "Attendance Successfully Loaded",
       attendance: attendance,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+};
+
+module.exports.saveStudentAttendanceQrCode = async (req, res, next) => {
+  try {
+    const { courseId, date } = req.query;
+    const data = [{ courseId: "234132123213213" }, { date: "23-01-2023" }];
+    QRCode.toDataURL(data, function (err, url) {
+      if (url) {
+        res.status(200).json({
+          status: "Success",
+          message: "Attendance Successfully Loaded",
+          qrCode: url,
+        });
+      } else {
+        console.log("ds", err);
+      }
     });
   } catch (error) {
     res.status(400).json({
