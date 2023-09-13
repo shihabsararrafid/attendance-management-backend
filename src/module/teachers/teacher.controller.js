@@ -11,8 +11,10 @@ const {
   getStudentAttendanceService,
   getStudentsAttendanceService,
   getStudentsAttendanceReportService,
+  saveStudentsAttendanceByQrCodeService,
 } = require("./teacher.service");
 var QRCode = require("qrcode");
+const Attendance = require("./Models/attendance.model");
 module.exports.createCourse = async (req, res, next) => {
   try {
     const course = await createClassService(req.body);
@@ -180,7 +182,7 @@ module.exports.getStudentAttendanceQrCode = async (req, res, next) => {
     const { courseId, date, duration } = req.query;
 
     const token = await createQrToken({ courseId, date }, duration);
-    //  console.log(token);
+    console.log(token);
     QRCode.toDataURL(`${token}`, function (err, url) {
       if (url) {
         // console.log(url);
@@ -204,13 +206,17 @@ module.exports.getStudentAttendanceQrCode = async (req, res, next) => {
 
 module.exports.saveStudentsAttendanceByQrCode = async (req, res, next) => {
   try {
-    const { token } = req.body;
+    const { studentId, token } = req.body;
     if (!token) createHttpError(401, "No Qr is Scanned");
     const payload = await verifyToken(token);
+    const result = await saveStudentsAttendanceByQrCodeService(
+      payload,
+      studentId
+    );
     res.status(200).json({
       status: "Success",
-      message: "Qr Code Generated",
-      data: payload,
+      message: "Attendance Saved Successfully",
+      data: result,
     });
   } catch (error) {
     res.status(400).json({

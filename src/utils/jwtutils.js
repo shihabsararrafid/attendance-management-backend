@@ -10,6 +10,7 @@ const privateKey = fs.readFileSync(
   "utf-8"
 );
 module.exports.createQrToken = (payload, duration) => {
+  console.log(duration);
   return new Promise((resolve, reject) => {
     jwt.sign(
       payload,

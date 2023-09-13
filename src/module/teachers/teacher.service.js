@@ -3,6 +3,7 @@ const Course = require("./Models/class.model");
 const Student = require("./Models/student.model");
 const userModel = require("../auth/user.model");
 const Attendance = require("./Models/attendance.model");
+const createHttpError = require("http-errors");
 
 module.exports.createClassService = async (data) => {
   const { startRoll, numberOfStudents, code, batchName, teacher, section } =
@@ -150,5 +151,23 @@ module.exports.getStudentsAttendanceReportService = async (courseId) => {
     },
   ]);
   return students;
-  console.log(students);
+};
+
+module.exports.saveStudentsAttendanceByQrCodeService = async (
+  payload,
+  studentId
+) => {
+  const { courseId, date } = payload;
+  const attendance = await Attendance.find({ courseId, date, studentId });
+  if (!attendance.length) {
+    const res = await Attendance.create({
+      courseId,
+      date,
+      studentId,
+      attendanceStatus: "present",
+    });
+    return res;
+  } else {
+    throw createHttpError(404, "Already your attendance saved");
+  }
 };
