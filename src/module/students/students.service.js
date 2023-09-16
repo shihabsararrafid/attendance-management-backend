@@ -1,3 +1,4 @@
+const Attendance = require("../teachers/Models/attendance.model");
 const Class = require("../teachers/Models/class.model");
 
 module.exports.getStudentsAllClassService = async (id) => {
@@ -7,4 +8,11 @@ module.exports.getStudentsAllClassService = async (id) => {
   );
   // const classCode =
   return classes;
+};
+module.exports.getStudentAttendanceService = async (id, courseId) => {
+  const attendance = await Attendance.find({
+    studentId: id,
+    courseId: courseId,
+  }).sort({ date: "asc" });
+  return attendance;
 };

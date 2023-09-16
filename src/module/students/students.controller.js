@@ -1,4 +1,7 @@
-const { getStudentsAllClassService } = require("./students.service");
+const {
+  getStudentsAllClassService,
+  getStudentAttendanceService,
+} = require("./students.service");
 
 module.exports.getStudentsAllClass = async (req, res, next) => {
   try {
@@ -9,6 +12,24 @@ module.exports.getStudentsAllClass = async (req, res, next) => {
       status: "Success",
       message: "All Class Loaded",
       classes: classes,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "Failed",
+      message: error.message,
+    });
+  }
+  next();
+};
+module.exports.getStudentAttendance = async (req, res, next) => {
+  try {
+    const { studentId, courseId } = req.query;
+    const attendance = await getStudentAttendanceService(studentId, courseId);
+    // console.log(url);
+    res.status(200).json({
+      status: "Success",
+      message: "All Class Loaded",
+      attendance: attendance,
     });
   } catch (error) {
     res.status(400).json({
