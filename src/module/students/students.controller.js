@@ -8,7 +8,7 @@ module.exports.getStudentsAllClass = async (req, res, next) => {
     res.status(200).json({
       status: "Success",
       message: "All Class Loaded",
-      qrCode: url,
+      classes: classes,
     });
   } catch (error) {
     res.status(400).json({

@@ -3,6 +3,6 @@ const { getStudentsAllClass } = require("./students.controller");
 
 const studentRouter = express.Router();
 
-studentRouter.get("/student/allClasses", getStudentsAllClass);
+studentRouter.route("/allClasses").get(getStudentsAllClass);
 
 module.exports = studentRouter;
