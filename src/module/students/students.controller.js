@@ -24,12 +24,15 @@ module.exports.getStudentsAllClass = async (req, res, next) => {
 module.exports.getStudentAttendance = async (req, res, next) => {
   try {
     const { studentId, courseId } = req.query;
-    const attendance = await getStudentAttendanceService(studentId, courseId);
+    const [attendance, presentCount, totalClass] =
+      await getStudentAttendanceService(studentId, courseId);
     // console.log(url);
     res.status(200).json({
       status: "Success",
       message: "All Class Loaded",
       attendance: attendance,
+      presentCount,
+      totalClass,
     });
   } catch (error) {
     res.status(400).json({

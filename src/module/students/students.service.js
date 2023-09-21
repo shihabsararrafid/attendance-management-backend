@@ -14,5 +14,15 @@ module.exports.getStudentAttendanceService = async (id, courseId) => {
     studentId: id,
     courseId: courseId,
   }).sort({ date: "asc" });
-  return attendance;
+  const res = attendance.sort((a, b) => {
+    const dataA = new Date(a.date);
+    const dataB = new Date(b.date);
+    return dataA - dataB;
+  });
+  const presentCount = attendance.filter(
+    (attend) => attend.attendanceStatus === "present"
+  );
+  const totalClass = attendance.length;
+  console.log(res);
+  return [res, presentCount, totalClass];
 };
