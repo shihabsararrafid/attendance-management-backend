@@ -24,5 +24,5 @@ module.exports.getStudentAttendanceService = async (id, courseId) => {
   );
   const totalClass = attendance.length;
   console.log(res);
-  return [res, presentCount, totalClass];
+  return [res, presentCount.length, totalClass];
 };
